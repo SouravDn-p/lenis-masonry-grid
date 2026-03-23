@@ -1,64 +1,67 @@
-import Image from "next/image";
+"use client";
+
+import ReactLenis, { useLenis } from "lenis/react";
 
 export default function Home() {
+  const lenis = useLenis((lenis) => {
+    // Optional: console.log(lenis.scroll)
+  });
+
+  // Manually defined positions to ensure 2-3 per row across 8 columns
+  // col: 1-8, row: 1-N
+  const galleryItems = [
+    { row: 1, col: 2 },
+    { row: 1, col: 5 },
+    { row: 1, col: 7 }, // Row 1 (3 items)
+    { row: 2, col: 1 },
+    { row: 2, col: 4 }, // Row 2 (2 items)
+    { row: 3, col: 3 },
+    { row: 3, col: 6 },
+    { row: 3, col: 8 }, // Row 3 (3 items)
+    { row: 4, col: 2 },
+    { row: 4, col: 5 }, // Row 4 (2 items)
+    { row: 5, col: 1 },
+    { row: 5, col: 4 },
+    { row: 5, col: 7 }, // Row 5 (3 items)
+    { row: 6, col: 3 },
+    { row: 6, col: 8 }, // Row 6 (2 items)
+    { row: 7, col: 2 },
+    { row: 7, col: 5 },
+    { row: 7, col: 6 }, // Row 7 (3 items)
+    { row: 8, col: 1 },
+    { row: 8, col: 4 }, // Row 8 (2 items)
+  ];
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="bg-zinc-50 dark:bg-black font-sans min-h-screen">
+      <ReactLenis root />
+
+      <main className=" mx-auto py-20 px-4">
+        {/* Grid Configuration:
+          - grid-cols-8: divides space into 8 equal parts
+          - gap-4: spacing between images
+        */}
+        <div className="grid grid-cols-8 gap-4 auto-rows-auto">
+          {galleryItems.map((item, index) => (
+            <div
+              key={index}
+              style={{
+                gridColumnStart: item.col,
+                gridRowStart: item.row,
+              }}
+              className="relative aspect-square w-full max-w-[360px] overflow-hidden rounded-lg bg-zinc-900 shadow-md"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              <img
+                src={`https://picsum.photos/seed/img-${index}/260/260`}
+                alt={`Gallery ${index}`}
+                className="w-full h-full object-cover transition-opacity hover:opacity-80"
+              />
+            </div>
+          ))}
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+
+        {/* Spacer for Lenis scroll demo */}
+        <div className="h-[50vh]" />
       </main>
     </div>
   );
